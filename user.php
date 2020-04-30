@@ -24,7 +24,8 @@ class User implements Crud{
     }
 
     public static function create(){
-        $instance= new self();
+        
+        $instance = self();
         return $instance;
     }
 
@@ -60,7 +61,7 @@ class User implements Crud{
 
     public function save($conn)
     {
-        
+        //$con=new DBConnector;
         $fn=$this->first_name;
         $ln=$this->last_name;
         $city=$this->city_name;
@@ -68,9 +69,9 @@ class User implements Crud{
         $this->hashPassword();
         $pass=$this->password;
 
-        $query="INSERT INTO user(first_name,last_name,user_city,username,password) VALUES ('$fn','$ln','$city','$uname','$pass')";
-        $res=mysqli_query($conn,$query)or die("Error inserting values" . mysqli_error("Error Inserting"));
-        return $res;
+        $res = mysqli_query($conn,"INSERT INTO user(first_name,last_name,user_city,username,password)  VALUES('$fn','$ln','$city','$uname','$pass')");
+
+           return $res;
     }
     
     public function readALl()

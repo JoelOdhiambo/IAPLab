@@ -3,9 +3,10 @@ include_once 'DBConnector.php';
 include_once 'user.php';
 
 $con = new DBConnector;
-if ($_POST['btn-login']) {
+if (isset( $_POST['btn-login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $instance= User::create();
     $instance->setPassword($password);
     $instance->setUsername($username);
 
@@ -38,7 +39,7 @@ if ($_POST['btn-login']) {
                 <td><input type="text" name="username" placeholder="Username" required></td>
             </tr>
             <tr>
-                <td><input type="password" name="password" id="Password"></td>
+                <td><input type="password" name="password" id="Password" placeholder="Password"></td>
             </tr>
             <tr>
                 <td><button type="submit" name="btn-login"><strong>LOGIN</strong></button></td>

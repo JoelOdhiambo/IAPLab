@@ -7,6 +7,8 @@ if (isset($_POST['btn-save'])) {
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $city = $_POST['city_name'];
+    $username=$_POST['username'];
+    $password=$_POST['password'];
 
     $user = new User($first_name, $last_name, $city, $username, $password);
     $res = $user->save($con->conn);
@@ -21,7 +23,7 @@ if (isset($_POST['btn-save'])) {
     if ($res) {
         echo "Save operation was Successful";
     } else {
-        echo "AN error occured";
+        echo "AN error occured";//
     }
 }
 ?>
@@ -64,14 +66,14 @@ if (isset($_POST['btn-save'])) {
                 <td><input type="text" name="username" placeholder="Username"></td>
             </tr>
             <tr>
-                <td><input type="text" name="password" placeholder="Password"></td>
+                <td><input type="password" name="password" placeholder="Password"></td>
             </tr>
             <tr>
                 <td><button type="submit" name="btn-save"><strong>SAVE</strong></button></td>
             </tr>
 
             <tr>
-                <td><a href="login.php"></a>Login</td> 
+                <td><a href="login.php">Login</a></td> 
                        </tr>
         </table>
     </form>
