@@ -15,7 +15,7 @@ if (isset($_POST['btn-save'])) {
 
     // LAB 2
 
-    if (!$user->validate_Form()) {
+    if (!$user->validateForm()) {
         $user->createFormErrorSessions();
         header("Refresh:0");
         die();

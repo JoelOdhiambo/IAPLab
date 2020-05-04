@@ -1,7 +1,7 @@
 <?php
 interface Crud{
     
-    public function save($conn);
+    public function save();
     public function readALl();
     public function readUnique();
     public function search();
@@ -11,7 +11,7 @@ interface Crud{
 
     //LAB 2
 
-    public function validate_Form();
+    public function validateForm();
     public function createFormErrorSessions();
 
 }

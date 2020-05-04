@@ -1,6 +1,7 @@
 <?php
 include_once 'DBConnector.php';
 include_once 'user.php';
+// ini_set('memory_limit','3072M');
 
 $con = new DBConnector;
 if (isset( $_POST['btn-login'])) {
