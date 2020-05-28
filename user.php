@@ -2,6 +2,7 @@
     include "crud.php";
     include "authenticator.php";
     include_once "DBConnector.php";
+    include_once "fileUploader.php";
 
     class User implements Crud{
         private $user_id;
@@ -10,6 +11,10 @@
         private $city_name;
         private $username;
         private $password;
+        
+        
+        //work on this
+        private static $target_directory="uploads/";
 
         function __construct($first_name, $last_name, $city_name, $username, $password){
             $this->first_name = $first_name;
@@ -68,7 +73,7 @@
             $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         }
 
-        public function isPasswordCorrect (){
+        public function isPasswordCorrect(){
             $con = new DBConnector;
             $found = false;
             $res = mysqli_query($con->conn, "SELECT * FROM user") or die("Error: ");
@@ -85,8 +90,9 @@
 
         public function login(){
             if($this->isPasswordCorrect()){
-                //header("Location:private_page.php");
-                echo "The code worked";
+                header("Location:private_page.php");
+                // echo $this->password;
+                // echo "The code worked";
             }
         }
 
@@ -103,17 +109,21 @@
         }
 
         public function save(){
+            $fileObj= new FileUploader;
+
             $fn = $this->first_name;
             $ln = $this->last_name;
             $city = $this->city_name;
             $uname = $this->username;
             $this->hashpassword();
             $pass = $this->password;
+            $file_name=$_FILES["fileToUpload"]["name"];
+            $dir=self::$target_directory.$file_name;
+            
 
             $con = new DBConnector;
-
-            $res = mysqli_query($con->conn, "INSERT INTO user(first_name, last_name, user_city, username, password) 
-                VALUES('$fn', '$ln', '$city', '$uname', '$pass')") or die("Error: ");
+            $res = mysqli_query($con->conn, "INSERT INTO user(first_name, last_name, user_city, username, user_pass, file_name, file_dir) 
+                VALUES('$fn', '$ln', '$city', '$uname', '$pass','$file_name', '$dir')") or die("Error:2");
             return $res;
         }
 
