@@ -7,7 +7,7 @@ $con = new DBConnector;
 if (isset($_POST['btn-login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $instance= User::create();
+    $instance = User::create();
     $instance->setPassword($password);
     $instance->setUsername($username);
 
@@ -19,7 +19,7 @@ if (isset($_POST['btn-login'])) {
         $instance->createUserSession();
     } else {
         $con->closeDatabase();
-       // header("Location:login.php");
+        // header("Location:login.php");
         echo "Wrong password";
     }
 }
@@ -31,24 +31,30 @@ if (isset($_POST['btn-login'])) {
     <title>LOG IN</title>
     <!-- <script type="text/javascript" src="validate.js"></script> -->
     <link rel="stylesheet" type="text/css" href="validate.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
 </head>
 
-<body>
-    <form method="POST" name="login" id="login" action="<?=$_SERVER['PHP_SELF']?>">
+<body class="bg-dark text-white" >
+    <div class="align-middle">
+    <form method="POST" name="login" id="login" action="<?= $_SERVER['PHP_SELF'] ?>">
 
         <table align="center">
             <tr>
-                <td><input type="text" name="username" placeholder="Username" required></td>
+                <td><div class="input-group mb-3"><input class="font-italic" type="text" name="username" placeholder="Username" required></div>
+                </td>
             </tr>
             <tr>
-                <td><input type="password" name="password" placeholder="Password"></td>
+                <td>
+                    <div class="input-group mb-3"><input class="font-italic" type="password" name="password" placeholder="Password"></div>
+                </td>
             </tr>
             <tr>
-                <td><button type="submit" name="btn-login"><strong>LOGIN</strong></button></td>
+                <td><button class="btn btn-dark font-weight-light" type="submit" name="btn-login"><strong>LOGIN</strong></button></td>
             </tr>
 
         </table>
     </form>
+    </div>
 </body>
 
 </html>

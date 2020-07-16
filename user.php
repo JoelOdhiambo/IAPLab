@@ -11,21 +11,25 @@
         private $city_name;
         private $username;
         private $password;
-        
-        
+        private $utc_timestamp;
+        private $offset;
+
         //work on this
         private static $target_directory="uploads/";
 
-        function __construct($first_name, $last_name, $city_name, $username, $password){
+        function __construct($first_name, $last_name, $city_name, $username, $password,$utc_timestamp,$offset){
             $this->first_name = $first_name;
             $this->last_name = $last_name;
             $this->city_name = $city_name;
             $this->username = $username;
             $this->password = $password;
+            $this->utc_timestamp=$utc_timestamp;
+            $this->offset=$offset;
         }
 
+
         public static function create(){
-            $instance = new self('', '', '', '', '');
+            $instance = new self('', '', '', '', '','','');
             return $instance;
         }
 
@@ -51,6 +55,25 @@
 
         public function getUserId (){
             return $this->user_id;
+        }
+
+        public function setUtcTimestamp($utc_timestamp){
+            $this->utc_timestamp=$utc_timestamp;
+        }
+
+        public function getUtcTimestamp($utc_timestamp)
+        {
+            return $this->utc_timestamp;
+        }
+
+        public function setOffset($offset)
+        {
+            $this->offset=$offset;
+        }
+
+        public function getOffset($offset)
+        {
+            return $this->offset;
         }
 
         public function isUserExist(){
@@ -117,13 +140,15 @@
             $uname = $this->username;
             $this->hashpassword();
             $pass = $this->password;
+            $utc=$this->utc_timestamp;
+            $offset=$this->offset;
             $file_name=$_FILES["fileToUpload"]["name"];
             $dir=self::$target_directory.$file_name;
             
 
             $con = new DBConnector;
-            $res = mysqli_query($con->conn, "INSERT INTO user(first_name, last_name, user_city, username, user_pass, file_name, file_dir) 
-                VALUES('$fn', '$ln', '$city', '$uname', '$pass','$file_name', '$dir')") or die("Error:2");
+            $res = mysqli_query($con->conn, "INSERT INTO user(first_name, last_name, user_city, username, user_pass, file_name, file_dir, utcTime, offset) 
+                VALUES('$fn', '$ln', '$city', '$uname', '$pass','$file_name', '$dir', '$utc', '$offset')") or die("Error:2");
             return $res;
         }
 
