@@ -1,7 +1,27 @@
 <?php
+include 'DBConnector.php';
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location:login.php");
+}
+function fetchUserApiKey()
+{
+    $username = $_SESSION['username'];
+    $key = "";
+    $db = new DBConnector;
+    $conn = $db->conn;
+    $re = mysqli_query($conn, "SELECT id FROM user WHERE username = '$username'");
+    while($row = mysqli_fetch_array($re))
+    {
+        $id = $row['id'];
+    }
+    $res = mysqli_query($conn, "SELECT api_key FROM api_keys WHERE user_id = '$id'");
+    while($row = mysqli_fetch_array($res))
+     {
+         $key = $row['api_key'];
+     }
+     return $key;
+
 }
 ?>
 <html>
@@ -30,7 +50,7 @@ if (!isset($_SESSION['username'])) {
         <!-- This text area will hold the API key -->
         
         <strong>Your API key:</strong>(Note that if your API key is already in use by runing applications,generatig a new key will stop the application from functioning)<br> 
-        <textarea name="api_key" id="api_key" cols="100" rows="2" readonly>php<?php echo fetchUserApiKey();?></textarea>
+        <textarea name="api_key" id="api_key" cols="100" rows="2" readonly><?php echo fetchUserApiKey();?></textarea>
     
         <h3>Service Description</h3>
         We have a service/API that allows external applications to order food and also pull all order status by using order id. Let's go!!!

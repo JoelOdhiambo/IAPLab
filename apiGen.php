@@ -5,12 +5,17 @@ if ($_SERVER['REQUEST_METHOD']!=='POST') {
     echo "You are forbidden";
 } else {
     //Generate an API key 64 characters long
-    $api_key=null;
-    $api_key=generateApiKey(64);
+    $api=new Api;
+    $api_key= $api->generateApiKey(64);
     header('Content-type: application/json');
-    echo generateResponse($api_key);
+    echo $api->generateResponse($api_key);
 }
-
+class Api{
+    private $api_key;
+    public function __construct()
+    {
+       
+    }
 function generateApiKey($str_length){
     $chars='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -24,24 +29,33 @@ function generateApiKey($str_length){
 
     $first=$chars[$repl[1]%62];
     $second=$chars[$repl[2]%62];
-    return strtr(substr(base64_encode($bytes),0,$str_length),'+/',"$first$second");
-
+    $this->api_key= strtr(substr(base64_encode($bytes),0,$str_length),'+/',"$first$second");
+    return $this->api_key;
 }
 
 function saveApiKey(){
+    $con= new DBConnector;
+    $id='';
+    $username='USER';
+    $res = mysqli_query($con->conn, "SELECT * id FROM user WHERE username='$username'"  ) or die("Error: ");
+    while ($row=mysqli_fetch_array($res) ) {
+        $id=$row['id'];
+    }
     
+    $save=mysqli_query($con->conn,"INSERT INTO api_keys (user_id,api_key) VALUES ('$id','$this->api_key') ");
+    return $save;
 }
 
-function generateResponse($api_key)
+function generateResponse()
 {
-    if (saveApiKey()) {
-        $res=['succes'=>1,'message'=>$api_key];
+    if ($this->saveApiKey()) {
+        $res=['succes'=>1,'message'=>$this->api_key];
     } else {
         $res=['succes'=>0,'message'=>'Something went wrong. Please regenerate the API key'];
     }
     return json_encode($res);
 }
 
-
+}
 
 ?>
